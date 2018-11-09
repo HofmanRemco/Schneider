@@ -10,6 +10,7 @@ command = b"\xc5\x74\x40"
 
 #       b"0\x03\x00\x30\x7a\xf5" 44bits
 data1 = b"\x03\x00\x30\x7a\xf5"
+data1 = bytes([3, 0, 48, 122, 245])
 
 # This is the address the plc will respond to.
 # Depending on the network mask the first bits will not matter, as they are used from the plc's configuration.
@@ -26,19 +27,20 @@ reply_ip = bytes([0, 0, 3, 2])
 # Byte5: Seems to be fixed at 0xc2
 #       b"\x90\x00\x00\x00\x02\xc2" 48bits
 data2 = b"\x90\x00\x00\x00\x02\xc2"
-data2 = bytes([145, 0, 0, 0, 2, 194])
+data2 = bytes([144, 0, 0, 0, 2, 194])
 
 # This doesn't seem to alter the response, so padding?
 #         b"\x03\x01\x3f\xaa\x00\x00" 48bits
-padding = b"\xff\xff\xff\xff\xff\xff"
+padding = b"\x03\x01\x3f\xaa\x00\x00"
 
 #                        64bits                32bits              48bits                 48bits
 #          <--------------todo---------->  <--reply_ip-->  <--------todo-------->  <------padding?------>
 #          ??  ??  ??  ??  ??  ??  ??  ??  ip  ip  ip  ip  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
 # data = b"\xc5\x74\x40\x03\x00\x30\x7a\xf5\x00\x00\x03\x2D\x90\x00\x00\x00\x02\xc2\x03\x01\x3f\xaa\x00\x00" 192 bits
 
-for b in range(600):
-    # data2 = bytes([b, 0, 0, 0, 2, 194])
+for b in range(255):
+    data1 = bytes([3, b, 48, 122, 245])
+    data2 = bytes([144, 0, 0, 0, 2, 194])
 
     data = command+data1+reply_ip+data2+padding
 
@@ -52,4 +54,4 @@ for b in range(600):
 
     # sendp(pkt, iface='enp0s31f6')
     sendp(pkt, iface='Realtek PCIe GBE Family Controller')
-    time.sleep(0.5)
+    time.sleep(10)
