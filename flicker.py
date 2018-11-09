@@ -1,11 +1,18 @@
 #!/usr/bin/python3
 from scapy.all import *
 
-payload = b"\xcc\x85\x5b\x51\x08\x03\x55\x0f\x6f\x79\x0d\x53\x47\x55\xc6\x14\x04\x6d\x9e\x33\x6a\x75\x76\x6c\xb9\xc2\x58\x40\x80\x72\x6e\x66\xf6\x73\x2a\xdc\x62\x47\x58\x55\x5a\x47\x59\x6c\x38"
+payload = bytearray([
+    0xcc, 0x85, 0x5b, 0x51, 0x08, 0x03, 0x55, 0x0f,
+    0x6f, 0x79, 0x0d, 0x53, 0x47, 0x55, 0xc6, 0x14,
+    0x04, 0x6d, 0x9e, 0x33, 0x6a, 0x75, 0x76, 0x6c,
+    0xb9, 0xc2, 0x58, 0x40, 0x80, 0x72, 0x6e, 0x66,
+    0xf6, 0x73, 0x2a, 0xdc, 0x62, 0x47, 0x58, 0x55,
+    0x5a, 0x47, 0x59, 0x6c, 0x38
+])
 
-crafted = Ether(src="00:0c:29:3d:27:d1", dst="ff:ff:ff:ff:ff:ff") /\
-    IP(version=4, ihl=5, id=0, tos=0, src="172.20.3.45", dst="255.255.255.255", ttl=128, options=[]) /\
-    UDP(sport=61994, dport=27127) /\
-    Raw(load=payload)
+crafted = Ether(dst="ff:ff:ff:ff:ff:ff") /\
+    IP(src="0.0.0.0", dst="255.255.255.255") /\
+    UDP(sport=0,dport=27127) /\
+    Raw(load=bytes(payload))
 
 sendp(crafted, iface='enp0s31f6')
