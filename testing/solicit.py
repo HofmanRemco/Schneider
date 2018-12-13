@@ -45,7 +45,7 @@ padding2 = bytes([3, 1, 63, 170, 0, 0])
 # data = b"\xc5\x74\x40\x03\x00\x30\x7a\xf5\x00\x00\x03\x2D\x90\x00\x00\x00\x02\xc2\x03\x01\x3f\xaa\x00\x00" 192 bits
 
 for b in range(256):
-    command = bytes([197, 116, b])
+    command = bytes([197, 116, 64])
     data1 = bytes([3, 0, 48, 122, 245])
     data2 = bytes([2, 194])
 

@@ -12,7 +12,8 @@ payload = bytearray([
 
 crafted = Ether(dst="ff:ff:ff:ff:ff:ff") /\
     IP(src="0.0.0.0", dst="255.255.255.255") /\
-    UDP(sport=0,dport=27127) /\
+    UDP(sport=0, dport=27127) /\
     Raw(load=bytes(payload))
 
-sendp(crafted, iface='enp0s31f6')
+# sendp(crafted, iface='enp0s31f6')
+sendp(crafted, iface='Realtek PCIe GBE Family Controller')
